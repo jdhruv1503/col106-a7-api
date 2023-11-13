@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from typing import List
 from transformers import pipeline, Conversation
 
 AVAIL_MODELS = ["deepset/roberta-base-squad2",
@@ -48,7 +49,7 @@ class InParams(BaseModel):
     query: str
 
 class OutModels(BaseModel):
-    models: list
+    models: List[str]
 
 @app.post("/api/", status_code=200)
 async def modelrun(request: InParams):
@@ -68,7 +69,7 @@ async def modelrun(request: InParams):
 async def modelrun():
     lis = AVAIL_CHATBOTS.extend(AVAIL_MODELS)
     print(lis)
-    return {'models': lis}
+    return lis
 
 
 
