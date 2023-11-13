@@ -69,7 +69,7 @@ async def modelrun(request: InParams):
 async def modelrun():
     lis = AVAIL_CHATBOTS
     print(lis)
-    return lis
+    return {'models': lis}
 
 
 
