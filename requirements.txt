@@ -1,0 +1,7 @@
+git+https://github.com/huggingface/transformers.git
+fastapi
+uvicorn
+numpy
+pydantic
+tensorflow
+transformer
