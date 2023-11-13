@@ -66,7 +66,8 @@ async def modelrun(request: InParams):
 
 @app.get("/get_models/", status_code=200, response_model=OutModels)
 async def modelrun():
-    return {'models': AVAIL_MODELS.extend(AVAIL_CHATBOTS)}
+    lis = AVAIL_CHATBOTS.extend(AVAIL_MODELS)
+    return {'models': lis}
 
 
 
