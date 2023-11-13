@@ -47,6 +47,9 @@ class InParams(BaseModel):
     context: str
     query: str
 
+class OutModels(BaseModel):
+    models: list
+
 @app.post("/api/", status_code=200)
 async def modelrun(request: InParams):
 
