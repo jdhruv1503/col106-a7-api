@@ -63,7 +63,7 @@ async def modelrun(request: InParams):
             status_code=404, detail="404 error"
         )
     
-    return response
+    return {'output': response}
 
 @app.get("/get_models/", status_code=200, response_model=OutModels)
 async def modelrun():
