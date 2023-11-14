@@ -15,7 +15,6 @@ AVAIL_CHATBOTS = [
                   "microsoft/DialoGPT-small",
                   "microsoft/DialoGPT-medium",
                   "microsoft/DialoGPT-large",
-                  "JosephusCheung/Guanaco",
                   "TheBloke/Vicuna-13B-1.1-GPTQ",
                   "alpindale/goliath-120b",
                   "h2oai/h2ogpt-gm-oasst1-en-2048-falcon-7b-v2",
