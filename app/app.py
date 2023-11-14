@@ -120,7 +120,7 @@ def init_models():
         elif model in AVAIL_PT:
             if model.startswith("facebook") or model.startswith("microsoft") or model.startswith("allenai"):
                 tokenizer = AutoTokenizer.from_pretrained(model)
-                model2 = AutoModelForSeq2SeqLM.from_pretrained(model)
+                model2 = AutoModelForSeq2SeqLM.from_pretrained(model, from_pt=True)
             elif model.startswith("Pygmalion"):
                 tokenizer = AutoTokenizer.from_pretrained(model)
-                model2 = AutoModelForCausalLM.from_pretrained(model)
+                model2 = AutoModelForCausalLM.from_pretrained(model, from_pt=True)
