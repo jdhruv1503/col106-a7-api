@@ -146,13 +146,24 @@ def pred_yi(context, query):
     from transformers import pipeline
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
-    tokenizer = AutoTokenizer.from_pretrained("01-ai/Yi-34B")
+    tokenizer = AutoTokenizer.from_pretrained("01-ai/Yi-34B", trust_remote_code=True)
     model = AutoModelForCausalLM.from_pretrained("01-ai/Yi-34B", trust_remote_code=True, device_map="auto", torch_dtype="auto")
 
     prompt = f"Background: From the memoirs of Gandhi in both third and first person:\n{context}\n\nQ: {query}\n\nA: "
-    inputs = tokenizer(prompt, return_tensors="pt").input_ids
+    inputs = tokenizer(prompt, return_tensors="pt")
 
-    pred = model.generate(inputs, max_new_tokens=300, do_sample=True, top_k=50, top_p=0.95)
-    out = tokenizer.batch_decode(pred, skip_special_tokens=True)[0]
+    
+    outputs = model.generate(
+    inputs.input_ids.cuda(),
+    max_length=300,
+    eos_token_id=tokenizer.eos_token_id,
+    do_sample=True,
+    repetition_penalty=1.3,
+    no_repeat_ngram_size=5,
+    temperature=0.7,
+    top_k=40,
+    top_p=0.8,
+    )
+    out = tokenizer.decode(outputs[0], skip_special_tokens=True)
     print(out)
     return out
