@@ -114,7 +114,7 @@ def init_models():
             if model.startswith("facebook") or model.startswith("microsoft") or model.startswith("allenai"):
                 print("here")
                 tokenizer = AutoTokenizer.from_pretrained(model)
-                model2 = AutoModelForSeq2SeqLM.from_pretrained(model, kwargs={'from_pt':True})
+                model2 = AutoModelForSeq2SeqLM.from_pretrained("allenai/cosmo-xl").to('cuda')
             elif model.startswith("Pygmalion"):
                 tokenizer = AutoTokenizer.from_pretrained(model)
                 model2 = AutoModelForCausalLM.from_pretrained(model, kwargs={'from_pt':True})
