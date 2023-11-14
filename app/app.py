@@ -4,6 +4,13 @@ from pydantic import BaseModel
 from typing import List
 import torch
 from transformers import pipeline, Conversation, AutoTokenizer, AutoModelForSeq2SeqLM, AutoModelForCausalLM, TFAutoModelForSeq2SeqLM, TFAutoModelForCausalLM
+from transformers import T5Tokenizer, T5ForConditionalGeneration
+
+# Cached model
+cache_path = "./t5"
+
+# Huggingface model
+model_id = "t5-large"
 
 AVAIL_MODELS = ["deepset/roberta-base-squad2",
                 "distilbert-base-cased-distilled-squad",
@@ -63,6 +70,24 @@ async def modelrun():
 async def modelrun():
     init_models()
     return 200
+
+@app.post("/t5-inf/", status_code=200)
+async def model_run(request: InParams):
+
+    tokenizer = T5Tokenizer.from_pretrained(model_id)
+    model = T5ForConditionalGeneration.from_pretrained(model_id, cache_dir=cache_path).to('cuda')
+
+    input = tokenizer(request.prompt, return_tensors="pt", padding=True)
+    generate_text = model.generate(
+        input_ids=input["input_ids"],
+        attention_mask=input["attention_mask"],
+        do_sample=False,
+    )
+    generated_text = tokenizer.batch_decode(generate_text, skip_special_tokens=True)
+    generated_text = generated_text[0]
+    print(generated_text)
+    return {'out': generated_text}
+
 
 
 
