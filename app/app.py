@@ -15,7 +15,6 @@ AVAIL_CHATBOTS = [
                   "microsoft/DialoGPT-small",
                   "microsoft/DialoGPT-medium",
                   "microsoft/DialoGPT-large",
-                  "TheBloke/Vicuna-13B-1.1-GPTQ",
                   "alpindale/goliath-120b",
                   "h2oai/h2ogpt-gm-oasst1-en-2048-falcon-7b-v2",
                   "facebook/blenderbot-3B",
@@ -62,7 +61,7 @@ async def modelrun(request: InParams):
             status_code=404, detail="404 error"
         )
     
-    return {'output': response}
+    return resp
 
 @app.get("/get_models/", status_code=200, response_model=OutModels)
 async def modelrun():
