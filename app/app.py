@@ -75,9 +75,10 @@ def run_model(model, context, query):
         return resp
     elif model in AVAIL_CHATBOTS:
         pipe = pipeline("conversational", model=model, device=0)
-        resp = pipe([Conversation(f"You are a helpful chatbot. Here's a series of excerpts from Gandhi's memoirs, some in 3rd and some in 1st person:\n\n\n\n {context} \n\n\n\n Now, using this information, correctly and concisely answer the following question: {query}")])
-        print(type(resp))
-        return resp
+        con = Conversation(f"You are a helpful chatbot. Here's a series of excerpts from Gandhi's memoirs, some in 3rd and some in 1st person:\n\n\n\n {context} \n\n\n\n Now, using this information, correctly and concisely answer the following question: {query}")
+        con = pipe(con)
+        
+        return {'response': con.generated_responses[-1]}
     else:
         return {'error': 'model not found'}
 
