@@ -59,6 +59,20 @@ async def modelrun(request: InParams):
     
     return response
 
+@app.post("/yi/", status_code=200)
+async def modelrun(request: InParams):
+
+    response = pred_yi(request.context, request.query)
+
+    if not response:
+        # the exception is raised, not returned - you will get a validation
+        # error otherwise.
+        raise HTTPException(
+            status_code=404, detail="404 error"
+        )
+    
+    return response
+
 @app.get("/get_models/", status_code=200, response_model=OutModels)
 async def modelrun():
     lis = AVAIL_CHATBOTS
@@ -126,3 +140,13 @@ def init_models():
             pipe.append(pipeline("question-answering", model=model, device=0))
         elif model in AVAIL_CHATBOTS:
             pipe.append(pipeline("conversational", model=model, device=0))
+
+def pred_yi(context, query):
+    # Use a pipeline as a high-level helper
+    from transformers import pipeline
+
+    pipe = pipeline("text-generation", model="01-ai/Yi-6B", trust_remote_code=True, device=0)
+
+    pred = pipe(f"Background: From the memoirs of Gandhi in both third and first person:\n{context}\n\nQ: {query}\n\nA: ",return_full_text=False)
+    print(pred)
+    return pred
