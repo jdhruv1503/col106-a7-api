@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
+import torch
 from transformers import pipeline, Conversation, AutoTokenizer, AutoModelForSeq2SeqLM, AutoModelForCausalLM, TFAutoModelForSeq2SeqLM, TFAutoModelForCausalLM
 
 AVAIL_MODELS = ["deepset/roberta-base-squad2",
@@ -74,11 +75,16 @@ def run_model(model, context, query):
         resp = pipe(context=context, question=query)
         return resp
     elif model in AVAIL_CHATBOTS:
-        pipe = pipeline("conversational", model=model, device=0)
-        con = Conversation(f"You are a helpful chatbot. Here's a series of excerpts from Gandhi's memoirs, some in 3rd and some in 1st person:\n\n\n\n {context} \n\n\n\n Now, using this information, correctly and concisely answer the following question: {query}")
-        con = pipe(con)
+        tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-large")
+        model2 = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-large").to('cuda')
+        prompt = (f"You are a helpful chatbot. Here's a series of excerpts from Gandhi's memoirs, some in 3rd and some in 1st person:\n\n\n\n {context} \n\n\n\n Now, using this information, correctly and concisely answer the following question: {query}")
+        new_user_input_ids = tokenizer.encode(prompt + tokenizer.eos_token, return_tensors='pt')
+        chat_history_ids = model.generate(new_user_input_ids, max_length=4000, pad_token_id=tokenizer.eos_token_id)
+        print((tokenizer.decode(chat_history_ids[:, new_user_input_ids.shape[-1]:][0], skip_special_tokens=True)))
         
-        return {'response': con}
+        res = tokenizer.decode(chat_history_ids[:, new_user_input_ids.shape[-1]:][0], skip_special_tokens=True)
+        
+        return {'response': res}
     else:
         return {'error': 'model not found'}
 
