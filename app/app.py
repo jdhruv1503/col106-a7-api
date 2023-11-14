@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
-from transformers import pipeline, Conversation
+from transformers import pipeline, Conversation, AutoTokenizer, AutoModelForSeq2SeqLM, AutoModelForCausalLM
 
 AVAIL_MODELS = ["deepset/roberta-base-squad2",
                 "distilbert-base-cased-distilled-squad",
@@ -118,4 +118,9 @@ def init_models():
         elif model in AVAIL_CHATBOTS:
             pipe.append(pipeline("conversational", model=model, device=0))
         elif model in AVAIL_PT:
-            pipe.append(pipeline("conversational", model=model, device=0, kwargs={'from_pt': True}))
+            if model.startswith("facebook") or model.startswith("microsoft") or model.startswith("allenai"):
+                tokenizer = AutoTokenizer.from_pretrained(model)
+                model2 = AutoModelForSeq2SeqLM.from_pretrained(model)
+            elif model.startswith("Pygmalion"):
+                tokenizer = AutoTokenizer.from_pretrained(model)
+                model2 = AutoModelForCausalLM.from_pretrained(model)
