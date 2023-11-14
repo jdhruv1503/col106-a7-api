@@ -23,13 +23,6 @@ AVAIL_CHATBOTS = [
 AVAIL_CHATBOTS = []
 
 AVAIL_PT = [
-                  
-                  "PygmalionAI/pygmalion-2.7b",
-                  "PygmalionAI/pygmalion-1.3b",
-                  "PygmalionAI/pygmalion-350m",
-                  
-                  "microsoft/GODEL-v1_1-large-seq2seq",
-                  "microsoft/GODEL-v1_1-base-seq2seq",
                   "allenai/cosmo-xl"]
 
 app = FastAPI(title="COL106 A7 custom API lesssgooooooo")
