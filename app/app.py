@@ -12,9 +12,9 @@ AVAIL_MODELS = ["deepset/roberta-base-squad2",
                 "deepset/minilm-uncased-squad2"]
 
 AVAIL_CHATBOTS = [
-                  "JosephusCheung/Guanaco",
-                  "alpindale/goliath-120b",
-                  "h2oai/h2ogpt-gm-oasst1-en-2048-falcon-7b-v2",
+                  "microsoft/DialoGPT-small",
+                  "microsoft/DialoGPT-medium",
+                  "microsoft/DialoGPT-large",
                   "facebook/blenderbot-3B",
                   "facebook/blenderbot-1B-distill",
                   "facebook/blenderbot-400M-distill",
