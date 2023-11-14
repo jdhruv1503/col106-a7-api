@@ -146,8 +146,8 @@ def pred_yi(context, query):
     from transformers import pipeline
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
-    tokenizer = AutoTokenizer.from_pretrained("01-ai/Yi-34B", trust_remote_code=True)
-    model = AutoModelForCausalLM.from_pretrained("01-ai/Yi-34B", trust_remote_code=True, device_map="auto", torch_dtype="auto")
+    tokenizer = AutoTokenizer.from_pretrained("01-ai/Yi-6B-200K", trust_remote_code=True)
+    model = AutoModelForCausalLM.from_pretrained("01-ai/Yi-6B-200K", trust_remote_code=True, device_map="auto", torch_dtype="auto")
 
     prompt = f"Background: From the memoirs of Gandhi in both third and first person:\n{context}\n\nQ: {query}\n\nA: "
     inputs = tokenizer(prompt, return_tensors="pt")
