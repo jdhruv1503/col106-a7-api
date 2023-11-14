@@ -15,6 +15,7 @@ AVAIL_CHATBOTS = [
                   "microsoft/DialoGPT-small",
                   "microsoft/DialoGPT-medium",
                   "microsoft/DialoGPT-large",
+                  "JosephusCheung/Guanaco",
                   "alpindale/goliath-120b",
                   "h2oai/h2ogpt-gm-oasst1-en-2048-falcon-7b-v2",
                   "facebook/blenderbot-3B",
@@ -61,7 +62,7 @@ async def modelrun(request: InParams):
             status_code=404, detail="404 error"
         )
     
-    return resp
+    return response
 
 @app.get("/get_models/", status_code=200, response_model=OutModels)
 async def modelrun():
@@ -95,12 +96,14 @@ def run_model(model, context, query):
 
 def init_models():
 
+    pipe = []
+
     lis = AVAIL_CHATBOTS
     for k in AVAIL_MODELS:
         lis.append(k)
 
     for model in lis:
         if model in AVAIL_MODELS:
-            pipe = pipeline("question-answering", model=model, device=0)
+            pipe.append(pipeline("question-answering", model=model, device=0))
         elif model in AVAIL_CHATBOTS:
-            pipe = pipeline("conversational", model=model, device=0)
+            pipe.append(pipeline("conversational", model=model, device=0))
