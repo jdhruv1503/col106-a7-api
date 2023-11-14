@@ -23,9 +23,6 @@ AVAIL_CHATBOTS = [
 AVAIL_CHATBOTS = []
 
 AVAIL_PT = [
-                  "facebook/blenderbot-1B-distill",
-                  "facebook/blenderbot-400M-distill",
-                  "facebook/blenderbot_small-90M",
                   
                   "PygmalionAI/pygmalion-6b",
                   "PygmalionAI/pygmalion-2.7b",
