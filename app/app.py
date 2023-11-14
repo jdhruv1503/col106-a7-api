@@ -166,4 +166,4 @@ def pred_yi(context, query):
     )
     out = tokenizer.decode(outputs[0], skip_special_tokens=True)
     print(out)
-    return out
+    return out.split("A: ")[-1]
