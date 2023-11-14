@@ -56,8 +56,6 @@ async def modelrun():
     lis = AVAIL_CHATBOTS
     for k in AVAIL_MODELS:
         lis.append(k)
-    for k in AVAIL_PT:
-        lis.append(k)
     return {'models': lis}
 
 @app.get("/init_models/", status_code=200)
