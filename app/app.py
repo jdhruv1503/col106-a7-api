@@ -5,6 +5,11 @@ from typing import List
 import torch
 from transformers import pipeline, Conversation, AutoTokenizer, AutoModelForSeq2SeqLM, AutoModelForCausalLM, TFAutoModelForSeq2SeqLM, TFAutoModelForCausalLM
 from transformers import T5Tokenizer, T5ForConditionalGeneration
+from transformers import pipeline
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+tokenizer = AutoTokenizer.from_pretrained("01-ai/Yi-6B-200K", trust_remote_code=True)
+model = AutoModelForCausalLM.from_pretrained("01-ai/Yi-6B-200K", trust_remote_code=True, device_map="auto", torch_dtype="auto")
 
 # Cached model
 cache_path = "./t5"
@@ -173,11 +178,7 @@ def keyword(query):
 
 def pred_yi(context, query):
     # Use a pipeline as a high-level helper
-    from transformers import pipeline
-    from transformers import AutoModelForCausalLM, AutoTokenizer
-
-    tokenizer = AutoTokenizer.from_pretrained("01-ai/Yi-6B-200K", trust_remote_code=True)
-    model = AutoModelForCausalLM.from_pretrained("01-ai/Yi-6B-200K", trust_remote_code=True, device_map="auto", torch_dtype="auto")
+    
 
     prompt = f"Background: From the memoirs of Gandhi in both third and first person:\n{context}\n\nQ: {query}\n\nA: "
     inputs = tokenizer(prompt, return_tensors="pt")
