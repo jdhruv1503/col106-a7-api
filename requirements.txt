@@ -4,4 +4,10 @@ uvicorn
 numpy
 pydantic
 tensorflow
-transformer
+transformers
+diffusers
+pillow
+accelerate
+safetensors
+xformers
+sentencepiece

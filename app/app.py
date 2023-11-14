@@ -77,7 +77,7 @@ async def model_run(request: InParams):
     tokenizer = T5Tokenizer.from_pretrained(model_id)
     model = T5ForConditionalGeneration.from_pretrained(model_id, cache_dir=cache_path).to('cuda')
 
-    input = tokenizer(request.prompt, return_tensors="pt", padding=True)
+    input = tokenizer(request.query, return_tensors="pt", padding=True)
     generate_text = model.generate(
         input_ids=input["input_ids"],
         attention_mask=input["attention_mask"],
