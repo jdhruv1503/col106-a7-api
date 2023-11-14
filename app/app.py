@@ -80,9 +80,9 @@ def run_model(model, context, query):
         prompt = (f"You are a helpful chatbot. Here's a series of excerpts from Gandhi's memoirs, some in 3rd and some in 1st person:\n\n\n\n {context} \n\n\n\n Now, using this information, correctly and concisely answer the following question: {query}")
         new_user_input_ids = tokenizer.encode(prompt + tokenizer.eos_token, return_tensors='pt').to('cuda')
         chat_history_ids = model2.generate(new_user_input_ids, max_length=4000, pad_token_id=tokenizer.eos_token_id)
-        print((tokenizer.decode(chat_history_ids[0], skip_special_tokens=True)))
+        print((tokenizer.decode(chat_history_ids[:, new_user_input_ids.shape[-1]:][0], skip_special_tokens=True)))
         
-        res = tokenizer.decode(chat_history_ids[0], skip_special_tokens=True)
+        res = tokenizer.decode(chat_history_ids[:, new_user_input_ids.shape[-1]:][0], skip_special_tokens=True)
         
         return {'response': res}
     else:
