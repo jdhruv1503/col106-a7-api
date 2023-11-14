@@ -72,6 +72,11 @@ async def modelrun():
         lis.append(k)
     return {'models': lis}
 
+@app.get("/init_models/", status_code=200)
+async def modelrun():
+    init_models()
+    return 200
+
 
 
 # ------------------------- MODELS ----------------------------------
