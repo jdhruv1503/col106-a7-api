@@ -42,6 +42,9 @@ class InParams(BaseModel):
     context: str
     query: str
 
+class InQ(BaseModel):
+    query: str
+
 class OutModels(BaseModel):
     models: List[str]
 
@@ -102,6 +105,12 @@ async def model_run(request: InParams):
     print(generated_text)
     return {'out': generated_text}
 
+@app.post("/get-keywords/", status_code=200)
+async def model_run(request: InQ):
+
+    resp = keyword(request.query)
+    return {'out': resp}
+
 
 
 
@@ -140,6 +149,27 @@ def init_models():
             pipe.append(pipeline("question-answering", model=model, device=0))
         elif model in AVAIL_CHATBOTS:
             pipe.append(pipeline("conversational", model=model, device=0))
+
+def keyword(query):
+    import vertexai
+    from vertexai.language_models import TextGenerationModel
+
+    vertexai.init(project="neon-webbing-404904", location="asia-southeast1")
+    parameters = {
+        "candidate_count": 1,
+        "max_output_tokens": 1024,
+        "temperature": 0.2,
+        "top_p": 0.8,
+        "top_k": 1
+    }
+
+    prompt = f'I have a query: {query}\nNow, I need to search for relevant paragraphs in a corpus relating to this query. So, give me just a list of 3 comma-separated keywords (not included in the query) that would be helpful in searching for this query.'
+
+    model = TextGenerationModel.from_pretrained("text-bison")
+    response = model.predict(prompt,
+        **parameters
+    )
+    return response.text
 
 def pred_yi(context, query):
     # Use a pipeline as a high-level helper
