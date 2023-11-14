@@ -15,10 +15,6 @@ AVAIL_CHATBOTS = [
                   "microsoft/DialoGPT-small",
                   "microsoft/DialoGPT-medium",
                   "microsoft/DialoGPT-large",
-                  "PygmalionAI/pygmalion-6b",
-                  "PygmalionAI/pygmalion-2.7b",
-                  "PygmalionAI/pygmalion-1.3b",
-                  "PygmalionAI/pygmalion-350m",
                   "microsoft/GODEL-v1_1-large-seq2seq",
                   "microsoft/GODEL-v1_1-base-seq2seq",
                   "allenai/cosmo-xl"
@@ -27,7 +23,12 @@ AVAIL_CHATBOTS = [
 AVAIL_PT = ["facebook/blenderbot-3B",
                   "facebook/blenderbot-1B-distill",
                   "facebook/blenderbot-400M-distill",
-                  "facebook/blenderbot_small-90M"]
+                  "facebook/blenderbot_small-90M",
+                  
+                  "PygmalionAI/pygmalion-6b",
+                  "PygmalionAI/pygmalion-2.7b",
+                  "PygmalionAI/pygmalion-1.3b",
+                  "PygmalionAI/pygmalion-350m"]
 
 app = FastAPI(title="COL106 A7 custom API lesssgooooooo")
 origins = ["*"]
