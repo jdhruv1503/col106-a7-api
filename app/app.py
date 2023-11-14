@@ -11,12 +11,16 @@ AVAIL_MODELS = ["deepset/roberta-base-squad2",
                 "deepset/tinyroberta-squad2",
                 "deepset/minilm-uncased-squad2"]
 
+AVAIL_MODELS = []
+
 AVAIL_CHATBOTS = [
                   "microsoft/DialoGPT-small",
                   "microsoft/DialoGPT-medium",
                   "microsoft/DialoGPT-large",
                   
                   ]
+
+AVAIL_CHATBOTS = []
 
 AVAIL_PT = [
                   "facebook/blenderbot-1B-distill",
@@ -119,6 +123,7 @@ def init_models():
             pipe.append(pipeline("conversational", model=model, device=0))
         elif model in AVAIL_PT:
             if model.startswith("facebook") or model.startswith("microsoft") or model.startswith("allenai"):
+                print("here")
                 tokenizer = AutoTokenizer.from_pretrained(model)
                 model2 = AutoModelForSeq2SeqLM.from_pretrained(model, from_pt=True)
             elif model.startswith("Pygmalion"):
