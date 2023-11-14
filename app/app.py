@@ -18,7 +18,7 @@ AVAIL_CHATBOTS = [
                   
                   ]
 
-AVAIL_PT = ["facebook/blenderbot-3B",
+AVAIL_PT = [
                   "facebook/blenderbot-1B-distill",
                   "facebook/blenderbot-400M-distill",
                   "facebook/blenderbot_small-90M",
