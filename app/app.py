@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
 import torch
+import vertexai
+from vertexai.language_models import TextGenerationModel
 from transformers import pipeline, Conversation, AutoTokenizer, AutoModelForSeq2SeqLM, AutoModelForCausalLM, TFAutoModelForSeq2SeqLM, TFAutoModelForCausalLM
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 from transformers import pipeline
@@ -44,6 +46,10 @@ app.add_middleware(
 
 class InParams(BaseModel):
     model: str
+    context: str
+    query: str
+
+class InAPI(BaseModel):
     context: str
     query: str
 
@@ -116,6 +122,11 @@ async def model_run(request: InQ):
     resp = keyword(request.query)
     return {'out': resp}
 
+@app.post("/vertex-ai/", status_code=200)
+async def model_run(request: InAPI):
+
+    resp = vertex(request.query, request.context)
+    return {'out': resp}
 
 
 
@@ -156,8 +167,6 @@ def init_models():
             pipe.append(pipeline("conversational", model=model, device=0))
 
 def keyword(query):
-    import vertexai
-    from vertexai.language_models import TextGenerationModel
 
     vertexai.init(project="neon-webbing-404904", location="asia-southeast1")
     parameters = {
@@ -198,3 +207,22 @@ def pred_yi(context, query):
     out = tokenizer.decode(outputs[0], skip_special_tokens=True)
     print(out)
     return out.split("A: ")[-1]
+
+def vertex(query, context):
+
+    vertexai.init(project="neon-webbing-404904", location="asia-southeast1")
+    parameters = {
+        "candidate_count": 1,
+        "max_output_tokens": 1024,
+        "temperature": 0.2,
+        "top_p": 0.8,
+        "top_k": 1
+    }
+
+    prompt = f'Background: From the memoirs of Gandhi in both third and first person:\n{context}\n\nQ: {query}\n\nA: '
+
+    model = TextGenerationModel.from_pretrained("text-bison-32k")
+    response = model.predict(prompt,
+        **parameters
+    )
+    return response.text
