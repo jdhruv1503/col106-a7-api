@@ -189,7 +189,7 @@ def keyword(query):
 def pred_yi(context, query):
     # Use a pipeline as a high-level helper
 
-    pipe = pipeline("text-generation", model="cerebras/Cerebras-GPT-1.3B", device=0)
+    pipe = pipeline("text-generation", model="cerebras/Cerebras-GPT-590M", device=0)
     prompt = f'Background: From the memoirs of Gandhi in both third and first person:\n{context}\n\nQ: {query}\n\nA: '
     resp = pipe(prompt, do_sample=False, return_full_text=False)
     return resp['generated_text']
