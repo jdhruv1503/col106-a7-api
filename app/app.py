@@ -191,8 +191,8 @@ def pred_yi(context, query):
 
     pipe = pipeline("text-generation", model="cerebras/Cerebras-GPT-1.3B", device_map="auto")
     prompt = f'Background: From the memoirs of Gandhi in both third and first person:\n{context}\n\nQ: {query}\n\nA: '
-    resp = pipe(prompt)
-    return resp
+    resp = pipe(prompt, do_sample=False, return_full_text=False)
+    return resp['generated_text']
 
 
 def vertex(query, context):
