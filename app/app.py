@@ -144,9 +144,15 @@ def init_models():
 def pred_yi(context, query):
     # Use a pipeline as a high-level helper
     from transformers import pipeline
+    from transformers import AutoModelForCausalLM, AutoTokenizer
 
-    pipe = pipeline("text-generation", model="01-ai/Yi-6B", trust_remote_code=True, device_map="auto", torch_dtype="auto")
+    tokenizer = AutoTokenizer.from_pretrained("01-ai/Yi-34B")
+    model = AutoModelForCausalLM.from_pretrained("01-ai/Yi-34B", trust_remote_code=True, device_map="auto", torch_dtype="auto")
 
-    pred = pipe(f"Background: From the memoirs of Gandhi in both third and first person:\n{context}\n\nQ: {query}\n\nA: ",return_full_text=False)
-    print(pred)
-    return pred
+    prompt = f"Background: From the memoirs of Gandhi in both third and first person:\n{context}\n\nQ: {query}\n\nA: "
+    inputs = tokenizer(prompt, return_tensors="pt").input_ids
+
+    pred = model.generate(inputs, max_new_tokens=300, do_sample=True, top_k=50, top_p=0.95)
+    out = tokenizer.batch_decode(pred, skip_special_tokens=True)[0]
+    print(out)
+    return out
