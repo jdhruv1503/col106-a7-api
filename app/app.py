@@ -188,26 +188,12 @@ def keyword(query):
 
 def pred_yi(context, query):
     # Use a pipeline as a high-level helper
-    
 
-    prompt = f"Background: From the memoirs of Gandhi in both third and first person:\n{context}\n\nQ: {query}\n\nA: "
-    inputs = tokenizer(prompt, return_tensors="pt")
+    pipe = pipeline("text-generation", model="cerebras/Cerebras-GPT-1.3B", device_map="auto")
+    prompt = f'Background: From the memoirs of Gandhi in both third and first person:\n{context}\n\nQ: {query}\n\nA: '
+    resp = pipe(prompt)
+    return resp
 
-    
-    outputs = model.generate(
-    inputs.input_ids.cuda(),
-    max_length=300,
-    eos_token_id=tokenizer.eos_token_id,
-    do_sample=True,
-    repetition_penalty=1.3,
-    no_repeat_ngram_size=5,
-    temperature=0.7,
-    top_k=40,
-    top_p=0.8,
-    )
-    out = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    print(out)
-    return out.split("A: ")[-1]
 
 def vertex(query, context):
 
