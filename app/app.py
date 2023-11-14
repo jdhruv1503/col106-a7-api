@@ -5,6 +5,7 @@ from typing import List
 import torch
 import vertexai
 from vertexai.language_models import TextGenerationModel
+from vertexai.preview.language_models import TextGenerationModel as TGM
 from transformers import pipeline, Conversation, AutoTokenizer, AutoModelForSeq2SeqLM, AutoModelForCausalLM, TFAutoModelForSeq2SeqLM, TFAutoModelForCausalLM
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 from transformers import pipeline
@@ -221,7 +222,7 @@ def vertex(query, context):
 
     prompt = f'Background: From the memoirs of Gandhi in both third and first person:\n{context}\n\nQ: {query}\n\nA: '
 
-    model = TextGenerationModel.from_pretrained("text-bison-32k")
+    model = TGM.from_pretrained("text-bison-32k")
     response = model.predict(prompt,
         **parameters
     )
