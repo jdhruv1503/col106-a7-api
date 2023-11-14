@@ -75,7 +75,7 @@ async def modelrun(request: InParams):
     return response
 
 @app.post("/yi/", status_code=200)
-async def modelrun(request: InParams):
+async def modelrun(request: InAPI):
 
     response = pred_yi(request.context, request.query)
 
