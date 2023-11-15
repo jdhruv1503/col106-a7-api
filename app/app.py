@@ -11,9 +11,6 @@ from transformers import T5Tokenizer, T5ForConditionalGeneration
 from transformers import pipeline
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-tokenizer = AutoTokenizer.from_pretrained("01-ai/Yi-6B-200K", trust_remote_code=True)
-model = AutoModelForCausalLM.from_pretrained("01-ai/Yi-6B-200K", trust_remote_code=True, device_map="auto", torch_dtype="auto")
-
 # Cached model
 cache_path = "./t5"
 
@@ -200,7 +197,7 @@ def vertex(query, context):
     vertexai.init(project="neon-webbing-404904", location="asia-southeast1")
     parameters = {
         "candidate_count": 1,
-        "max_output_tokens": 1024,
+        "max_output_tokens": 2048,
         "temperature": 0.2,
         "top_p": 0.8,
         "top_k": 1
